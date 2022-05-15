@@ -1,0 +1,31 @@
+services:
+  web:
+    image: app:latest
+    ports:
+      - "8081:8081"
+    depends_on:
+      - postgres_db
+      - mock
+
+  mock:
+    image: mockapp:latest
+    ports:
+      - '8082:8082'
+    command: --port 8082 --https-port 8443 --verbose
+
+  postgres_db:
+    image: postgres:14.2-alpine
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+    ports:
+      - '5432:5432'
+    volumes:
+      - ./sql/init.sql:/docker-entrypoint-initdb.d/init.sql
+#      - db:/var/lib/postgresql/data
+    command: ["postgres", "-c", "log_statement=all"]
+
+#volumes:
+#  sql:
+#    name: init_volume
+#    driver: local
