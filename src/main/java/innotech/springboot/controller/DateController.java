@@ -20,9 +20,9 @@ public class DateController {
     }
 
     @GetMapping(path = "/all", produces = "application/json")
-    public DatesDTO getAllDatess() {
-       List<DateDTO> list = dateService.findAll();
-       return new DatesDTO(list);
+    public DatesDTO getAllDates() {
+        List<DateDTO> list = dateService.findAll();
+        return new DatesDTO(list);
     }
 
     @PostMapping(path = "/add", consumes = "application/json")

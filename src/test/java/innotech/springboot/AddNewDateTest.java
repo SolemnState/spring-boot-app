@@ -1,9 +1,10 @@
 package innotech.springboot;
 
 import innotech.springboot.controller.DateController;
-import innotech.springboot.dao.DateDAO;
+import innotech.springboot.dto.DateDTO;
+import innotech.springboot.dto.DatesDTO;
 import innotech.springboot.model.Date;
-import innotech.springboot.model.Dates;
+import innotech.springboot.repository.DateRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,9 +12,9 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.ResultActions;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -27,18 +28,20 @@ public class AddNewDateTest {
     private MockMvc mockMvc;
     @Autowired
     DateController dateController;
+    @Autowired
+    DateRepository dateRepository;
 
     @Test
     public void addNewDateTest_ok() throws Exception {
-        int countBefore = DateDAO.getDatesList().getDateList().size();
-        Date testDate = new Date(LocalDate.of(1998,10,6));
+        long countBefore = dateRepository.count();
+        LocalDate localDate = LocalDate.parse("06.10.1998", DateTimeFormatter.ofPattern("dd.MM.yyyy"));
+        DateDTO testDate = new DateDTO(localDate);
 
         dateController.addDate(testDate);
 
-        Dates dates = DateDAO.getDatesList();
-        List<Date> datesList = dates.getDateList();
+        List<Date> datesList= dateRepository.findAll();
         int countAfter = datesList.size();
-        Date addedDate = datesList.get(datesList.size() - 1);
+        Date addedDate = datesList.get(datesList.size()-1);
 
         Assertions.assertEquals(countBefore + 1, countAfter);
         Assertions.assertTrue(testDate.equals(addedDate));
@@ -54,7 +57,7 @@ public class AddNewDateTest {
         this.mockMvc.perform(post("/date/add")
             .contentType(MediaType.APPLICATION_JSON)
             .content(String.format(requestBody, "01.01.2000")))
-        .andExpect(status().isCreated());
+        .andExpect(status().isOk());
     }
 
     @Test
