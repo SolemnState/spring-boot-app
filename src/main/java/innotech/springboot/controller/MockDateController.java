@@ -3,7 +3,7 @@ package innotech.springboot.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import innotech.springboot.model.Date;
+import innotech.springboot.dto.DateDTO;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,7 +22,7 @@ import java.net.http.HttpResponse.BodyHandlers;
 public class MockDateController {
 
     @GetMapping(produces = "application/json")
-    public Date mockDate() throws IOException, InterruptedException {
+    public DateDTO mockDate() throws IOException, InterruptedException {
         String uri = "http://mock:8082/mock";
         HttpClient httpClient = HttpClient.newHttpClient();
         HttpRequest request = HttpRequest.newBuilder()
@@ -35,7 +35,7 @@ public class MockDateController {
         ObjectMapper mapper = new ObjectMapper();
         mapper.registerModule(new JavaTimeModule());
         mapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
-        return mapper.readValue(response.body(), Date.class);
+        return mapper.readValue(response.body(), DateDTO.class);
     }
 
 }

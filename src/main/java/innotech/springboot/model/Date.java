@@ -1,38 +1,21 @@
 package innotech.springboot.model;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NonNull;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
+import javax.persistence.*;
 
-import java.time.LocalDate;
-
-@Data
-@Builder
+@Entity(name = "date")
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class Date {
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd.MM.yyyy")
-    @NonNull
-    private LocalDate date;
-
-    public Date() { }
-
-    public Date(String dateString) {
-        this.date = LocalDate.parse(dateString);
-    }
-
-    public Date(LocalDate date) {
-        this.date = date;
-    }
-
-    @Override
-    public String toString() {
-        return "Date{" +
-                "date='" + date + '\'' +
-                '}';
-    }
-
-    public Boolean equals(Date date) {
-        return this.date.isEqual(date.getDate());
-    }
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long date_id;
+    @Column(nullable = false)
+    private String value;
 }
