@@ -23,7 +23,7 @@ public class MockDateController {
 
     @GetMapping(produces = "application/json")
     public DateDTO mockDate() throws IOException, InterruptedException {
-        String uri = "http://mock:8082/mock";
+        String uri = "http://localhost:8082/mock";
         HttpClient httpClient = HttpClient.newHttpClient();
         HttpRequest request = HttpRequest.newBuilder()
                 .GET()
