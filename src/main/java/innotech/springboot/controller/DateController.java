@@ -4,12 +4,15 @@ import innotech.springboot.dto.DateDTO;
 import innotech.springboot.dto.DatesDTO;
 import innotech.springboot.service.DateService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
 @RequestMapping("/date")
+@Validated
 public class DateController {
     @Autowired
     DateService dateService;
@@ -26,7 +29,7 @@ public class DateController {
     }
 
     @PostMapping(path = "/add", consumes = "application/json")
-    public void addDate(@RequestBody DateDTO date) {
+    public void addDate(@RequestBody @Valid DateDTO date) {
         dateService.addNewDate(date);
     }
 
