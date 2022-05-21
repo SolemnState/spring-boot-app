@@ -1,7 +1,7 @@
 package innotech.springboot;
 
 import innotech.springboot.controller.DateController;
-import innotech.springboot.model.Date;
+import innotech.springboot.dto.DateDTO;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -19,11 +19,11 @@ public class GetCurrentDateTest {
 
     @Test
     public void getCurrentDate_ok() {
-        Date testDate =  new Date(Instant.now().atZone(
+        DateDTO testDate =  new DateDTO(Instant.now().atZone(
                 ZoneId.of("UTC")
         ).toLocalDate());
 
-        Date currentDate = dateController.currentDate();
+        DateDTO currentDate = dateController.getCurrentDate();
 
         assertTrue(testDate.equals(currentDate));
     }
